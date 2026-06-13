@@ -1,0 +1,2 @@
+export const DEFAULT_JOCKEY_EXPERIENCE_YEARS = 5;
+export const DEFAULT_JOCKEY_RATING = 4.72;
