@@ -11,6 +11,7 @@ import {
   Gauge,
   Gavel,
   Home,
+  LayoutDashboard,
   LogIn,
   Medal,
   ShieldCheck,
@@ -30,7 +31,8 @@ export const roleMenus = {
     { id: "public-races", label: "Public Races", icon: Trophy }
   ],
   Spectator: [
-    { id: "spectator-dashboard", label: "Dashboard", icon: Home },
+    { id: "home", label: "Home", icon: Home },
+    { id: "spectator-dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "races", label: "Races", icon: CalendarDays },
     { id: "predictions", label: "Prediction / Bet", icon: Sparkles },
     { id: "bet-history", label: "Betting History", icon: ClipboardList },
@@ -41,7 +43,8 @@ export const roleMenus = {
     { id: "profile", label: "Profile", icon: UserCog }
   ],
   HorseOwner: [
-    { id: "owner-dashboard", label: "Dashboard", icon: Home },
+    { id: "home", label: "Home", icon: Home },
+    { id: "owner-dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "my-horses", label: "My Horses", icon: ShieldCheck },
     { id: "register-race", label: "Register Horse", icon: ClipboardCheck },
     { id: "jockey-selection", label: "Jockey Selection", icon: UserCheck },
@@ -51,7 +54,8 @@ export const roleMenus = {
     { id: "profile", label: "Profile", icon: UserCog }
   ],
   Jockey: [
-    { id: "jockey-dashboard", label: "Dashboard", icon: Home },
+    { id: "home", label: "Home", icon: Home },
+    { id: "jockey-dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "ride-invitations", label: "Ride Invitations", icon: Bell },
     { id: "jockey-schedule", label: "My Schedule", icon: CalendarDays },
     { id: "assigned-races", label: "Assigned Races", icon: Flag },
@@ -60,7 +64,8 @@ export const roleMenus = {
     { id: "profile", label: "Profile", icon: UserCog }
   ],
   Referee: [
-    { id: "referee-dashboard", label: "Dashboard", icon: Home },
+    { id: "home", label: "Home", icon: Home },
+    { id: "referee-dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "race-monitoring", label: "Race Monitoring", icon: Gauge },
     { id: "horse-check", label: "Horse Check", icon: ClipboardCheck },
     { id: "violations", label: "Violations", icon: AlertTriangle },
@@ -69,7 +74,7 @@ export const roleMenus = {
     { id: "profile", label: "Profile", icon: UserCog }
   ],
   Admin: [
-    { id: "admin-dashboard", label: "Dashboard", icon: Home },
+    { id: "admin-dashboard", label: "Dashboard", icon: LayoutDashboard },
     { id: "user-management", label: "Users", icon: Users },
     { id: "account-approval", label: "Approvals", icon: UserCheck },
     { id: "tournaments", label: "Tournaments", icon: Trophy },
@@ -87,9 +92,9 @@ export const roleMenus = {
 
 export const defaultPageByRole = {
   Guest: "login",
-  Spectator: "spectator-dashboard",
-  HorseOwner: "owner-dashboard",
-  Jockey: "jockey-dashboard",
-  Referee: "referee-dashboard",
+  Spectator: "home",
+  HorseOwner: "home",
+  Jockey: "home",
+  Referee: "home",
   Admin: "admin-dashboard"
 };

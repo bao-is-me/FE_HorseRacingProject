@@ -15,6 +15,7 @@ import JockeyDashboard from "../features/dashboard/pages/JockeyDashboard";
 import OwnerDashboard from "../features/dashboard/pages/OwnerDashboard";
 import RefereeDashboard from "../features/dashboard/pages/RefereeDashboard";
 import SpectatorDashboard from "../features/dashboard/pages/SpectatorDashboard";
+import HomePage from "../features/homepage/pages/HomePage";
 import HorseManagementPage from "../features/horses/pages/HorseManagementPage";
 import RegisterHorsePage from "../features/horses/pages/RegisterHorsePage";
 import JockeySelectionPage from "../features/jockey/pages/JockeySelectionPage";
@@ -41,6 +42,8 @@ function AppRouter({ role, activePage, user, setSession, activateRole, setActive
   if (activePage === "public-races") return <RaceListPage publicView />;
 
   switch (activePage) {
+    case "home":
+      return <HomePage role={role} user={user} onNavigate={setActivePage} />;
     case "spectator-dashboard":
       return <SpectatorDashboard user={user} />;
     case "owner-dashboard":

@@ -11,7 +11,7 @@ export function renderCell(value) {
   if (["Banned", "Error", "Review"].includes(value)) {
     return <StatusPill tone="danger">{value}</StatusPill>;
   }
-  if (["BettingOpen", "Live", "Info"].includes(value)) {
+  if (["BettingOpen", "Live", "Racing", "Info"].includes(value)) {
     return <StatusPill tone="info">{value}</StatusPill>;
   }
   return value ?? "-";
