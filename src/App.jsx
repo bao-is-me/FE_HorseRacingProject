@@ -36,6 +36,17 @@ function App() {
     setSidebarOpen(false);
   }
 
+  const routedPage = (
+    <AppRouter
+      role={role}
+      activePage={activePage}
+      user={user}
+      setSession={setSession}
+      activateRole={activateRole}
+      setActivePage={setActivePage}
+    />
+  );
+
   return (
     <MainLayout
       role={role}
@@ -48,14 +59,7 @@ function App() {
       onRoleSwitch={activateRole}
       onLogout={logout}
     >
-      <AppRouter
-        role={role}
-        activePage={activePage}
-        user={user}
-        setSession={setSession}
-        activateRole={activateRole}
-        setActivePage={setActivePage}
-      />
+      {routedPage}
     </MainLayout>
   );
 }

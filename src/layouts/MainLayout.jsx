@@ -9,6 +9,7 @@ function MainLayout({ role, menu, user, activePage, sidebarOpen, onNavigate, onM
       <div className="workspace">
         <TopBar role={role} user={user} onMenu={onMenu} onRoleSwitch={onRoleSwitch} onLogout={onLogout} />
         <main className="content">{children}</main>
+        <footer className="app-footer">© 2026 Horse Racing Management System.</footer>
       </div>
     </div>
   );

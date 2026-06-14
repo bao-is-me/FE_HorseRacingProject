@@ -67,7 +67,7 @@ button {
 
 .app-shell {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 253px minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -185,7 +185,7 @@ button {
 .user-chip strong,
 .user-chip small {
   display: block;
-  max-width: 188px;
+  max-width: 136px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -211,7 +211,7 @@ button {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 12px 24px;
+  padding: 12px 16px;
   background: rgba(247, 249, 251, 0.92);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px);
@@ -223,7 +223,7 @@ button {
   align-items: center;
   gap: 10px;
   min-width: 0;
-  max-width: 720px;
+  max-width: 380px;
   background: #ffffff;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -324,7 +324,24 @@ button {
 }
 
 .content {
-  padding: 24px;
+  flex: 1;
+  padding: 12px 18px 8px;
+}
+
+.app-footer {
+  padding: 0 18px 8px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.auth-content-canvas {
+  min-height: calc(100vh - 68px - 40px - 28px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .page-stack {
@@ -383,27 +400,35 @@ button {
 }
 
 .auth-layout {
-  min-height: calc(100vh - 116px);
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 460px);
-  align-items: center;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) 430px;
+  align-items: start;
+  gap: 10px;
+  width: calc(100% - 32px);
+  max-width: 100%;
+  margin: 0 auto;
+  min-width: 0;
+  transform: translateY(-28px);
 }
 
 .auth-visual {
-  min-height: 520px;
+  min-height: min(550px, calc(100vh - 190px));
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 18px;
+  justify-content: center;
+  gap: 16px;
   color: #ffffff;
   border-radius: 8px;
-  padding: 32px;
+  padding: 48px 36px 38px;
   background:
-    linear-gradient(120deg, rgba(9, 20, 38, 0.92), rgba(0, 88, 190, 0.42)),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 54px),
-    linear-gradient(135deg, #091426 0%, #263c54 55%, #b8872f 100%);
-  box-shadow: var(--shadow);
+    linear-gradient(90deg, rgba(20, 4, 107, 0.95) 0%, rgba(19, 32, 116, 0.78) 48%, rgba(14, 22, 55, 0.22) 100%),
+    linear-gradient(120deg, rgba(9, 20, 38, 0.62), rgba(0, 88, 190, 0.2)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 58px),
+    url("https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&w=1200&q=80"),
+    linear-gradient(135deg, #14046b 0%, #10256f 58%, #9f8c6a 100%);
+  background-position: center, center, center, center right, center;
+  background-size: cover;
+  box-shadow: 0 22px 54px rgba(18, 28, 45, 0.12);
   overflow: hidden;
   position: relative;
 }
@@ -415,7 +440,7 @@ button {
   right: 0;
   bottom: 86px;
   height: 9px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.72), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.48), transparent);
 }
 
 .auth-visual::after {
@@ -425,7 +450,7 @@ button {
   bottom: 64px;
   width: 74%;
   height: 44px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.32);
   border-left: 0;
   border-right: 0;
   transform: skewX(-14deg);
@@ -436,18 +461,26 @@ button {
   z-index: 1;
 }
 
+.auth-visual .status-pill {
+  align-self: flex-start;
+  min-height: 22px;
+  padding: 3px 10px;
+  font-size: 11px;
+  opacity: 0.86;
+}
+
 .auth-visual h1 {
-  max-width: 760px;
+  max-width: min(520px, 42%);
   margin: 0;
-  font-size: clamp(38px, 5vw, 64px);
-  line-height: 1.02;
+  font-size: clamp(34px, 3.6vw, 46px);
+  line-height: 1.12;
   letter-spacing: 0;
 }
 
 .auth-visual p {
-  max-width: 620px;
+  max-width: min(560px, 48%);
   color: #eff1f3;
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .auth-stats,
@@ -458,7 +491,49 @@ button {
 }
 
 .auth-stats {
-  grid-template-columns: repeat(2, minmax(0, 180px));
+  grid-template-columns: repeat(2, minmax(0, 145px));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.auth-stats .metric-card {
+  min-height: 118px;
+  padding: 16px;
+  border-color: rgba(0, 88, 190, 0.48);
+  box-shadow: 0 10px 28px rgba(3, 7, 18, 0.14);
+}
+
+.auth-stats .metric-card span {
+  font-size: 11px;
+}
+
+.auth-stats .metric-card strong {
+  margin-top: 8px;
+  font-size: 30px;
+}
+
+.auth-stats .metric-card small {
+  display: block;
+  margin-top: 8px;
+  color: #334155;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.auth-stats .metric-card svg {
+  width: 18px;
+  height: 18px;
+}
+
+.auth-form-column {
+  width: 100%;
+  max-width: 430px;
+  justify-self: stretch;
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  align-self: stretch;
 }
 
 .metric-grid.two {
@@ -517,7 +592,110 @@ th {
 .auth-card {
   display: grid;
   gap: 16px;
-  padding: 28px;
+  padding: 34px 30px;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(18, 28, 45, 0.1);
+  align-content: center;
+}
+
+.auth-card .section-heading h2 {
+  font-size: 34px;
+}
+
+.auth-card .section-heading p,
+.auth-card .form-note {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.auth-card .field {
+  gap: 8px;
+}
+
+.auth-card .field input {
+  height: 48px;
+  font-size: 16px;
+}
+
+.auth-card .primary-button {
+  min-height: 48px;
+  font-size: 16px;
+}
+
+.auth-card .primary-button {
+  background: #3b00e6;
+}
+
+.auth-card .primary-button:hover {
+  background: #2e00b8;
+}
+
+.demo-access {
+  display: grid;
+  gap: 14px;
+  padding: 0;
+}
+
+.auth-demo-dock {
+  position: absolute;
+  right: 16px;
+  bottom: 4px;
+  width: 430px;
+}
+
+.demo-divider {
+  display: none;
+}
+
+.demo-access > span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.demo-access > span::before,
+.demo-access > span::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--line);
+}
+
+.demo-role-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.demo-role-button {
+  width: 86px;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.demo-role-button:hover,
+.demo-role-button.active {
+  border-color: var(--secondary);
+  background: var(--secondary-soft);
+  color: var(--secondary);
 }
 
 .form-grid {
@@ -791,11 +969,12 @@ tbody tr:last-child td {
   }
 
   .auth-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 10px;
   }
 
   .auth-visual {
-    min-height: 360px;
+    min-height: min(520px, calc(100vh - 190px));
   }
 }
 
@@ -841,6 +1020,11 @@ tbody tr:last-child td {
     padding: 16px;
   }
 
+  .auth-content-canvas {
+    min-height: calc(100vh - 64px - 32px);
+    align-items: flex-start;
+  }
+
   .auth-layout,
   .form-grid,
   .metric-grid,
@@ -851,13 +1035,51 @@ tbody tr:last-child td {
     grid-template-columns: 1fr;
   }
 
+  .auth-layout {
+    min-height: auto;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+  }
+
+  .auth-form-column {
+    order: 1;
+    width: 100%;
+    max-width: min(440px, 100%);
+    justify-self: stretch;
+    transform: none;
+  }
+
+  .auth-demo-dock {
+    position: static;
+    width: 100%;
+    margin-top: 16px;
+    order: 3;
+  }
+
   .auth-visual {
-    min-height: 300px;
-    padding: 22px;
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    padding: 20px;
+    background-position: center, center, center, center right, center;
+  }
+
+  .auth-visual h1 {
+    font-size: 28px;
+    max-width: 360px;
+  }
+
+  .auth-visual p {
+    max-width: 360px;
+    font-size: 14px;
   }
 
   .auth-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
   }
 
   .form-actions {
@@ -890,6 +1112,23 @@ tbody tr:last-child td {
   .panel,
   .form-page {
     padding: 16px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
+
+  .auth-card .section-heading h2 {
+    font-size: 28px;
+  }
+
+  .demo-role-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .demo-role-button {
+    width: auto;
   }
 
   table {
