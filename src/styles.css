@@ -950,10 +950,10 @@ tbody tr:last-child td {
 }
 
 .profile-page {
-  width: min(1180px, 100%);
+  width: 100%;
   display: grid;
   gap: 24px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .profile-hero {
@@ -1015,9 +1015,15 @@ tbody tr:last-child td {
 }
 
 .profile-title p {
+  width: fit-content;
   margin: 0;
-  color: var(--muted);
-  font-size: 14px;
+  padding: 5px 10px;
+  border: 1px solid #adc6ff;
+  border-radius: 999px;
+  background: var(--secondary-soft);
+  color: var(--secondary);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .profile-status {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Download, Edit3, UserRound, Wallet } from "lucide-react";
+import { Edit3, UserRound, Wallet } from "lucide-react";
 import { roles } from "../../../mocks/roles.mock";
 import { formatCurrency } from "../../../utils/formatters";
 import { initials } from "../../../utils/roleUtils";
@@ -54,10 +54,6 @@ function ProfilePage({ user, role }) {
           <button className="primary-button fit" type="button">
             <Edit3 size={15} />
             Edit Profile
-          </button>
-          <button className="secondary-button" type="button">
-            <Download size={15} />
-            Export Data
           </button>
         </div>
       </section>
