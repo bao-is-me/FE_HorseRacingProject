@@ -2,8 +2,12 @@ import { demoAccounts } from "../../mocks/accounts.mock";
 import { roles } from "../../mocks/roles.mock";
 import { formatCurrency } from "../../utils/formatters";
 
+export function getProfile(user, role) {
+  return user || demoAccounts.find((account) => account.role === role) || demoAccounts[0];
+}
+
 export function getProfileRows(user, role) {
-  const profile = user || demoAccounts.find((account) => account.role === role) || demoAccounts[0];
+  const profile = getProfile(user, role);
   const rows = [
     { Field: "Email", Value: profile.email },
     { Field: "Role", Value: roles[profile.role] || roles[role] || "Guest" },

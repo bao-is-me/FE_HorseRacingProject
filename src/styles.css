@@ -949,6 +949,221 @@ tbody tr:last-child td {
   background: #ffffff;
 }
 
+.profile-page {
+  width: min(1180px, 100%);
+  display: grid;
+  gap: 24px;
+  margin: 0 auto;
+}
+
+.profile-hero {
+  min-height: 116px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 28px;
+}
+
+.profile-avatar-card {
+  position: relative;
+  width: 82px;
+  height: 82px;
+}
+
+.profile-avatar-paper {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, #eef4ff);
+  border: 1px solid var(--line);
+  color: var(--secondary);
+  box-shadow: 0 12px 28px rgba(18, 28, 45, 0.08);
+}
+
+.profile-avatar-card > span {
+  position: absolute;
+  right: 8px;
+  bottom: 10px;
+  width: 14px;
+  height: 14px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #22c55e;
+}
+
+.profile-title {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.profile-title > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-title h2 {
+  margin: 0;
+  color: var(--primary);
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.profile-title p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.profile-status {
+  min-height: 22px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.profile-actions {
+  display: grid;
+  gap: 10px;
+  justify-items: stretch;
+}
+
+.profile-actions .primary-button,
+.profile-actions .secondary-button {
+  min-width: 132px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr);
+  align-items: start;
+  gap: 32px;
+}
+
+.profile-card,
+.profile-wallet {
+  padding: 0;
+  overflow: hidden;
+}
+
+.profile-card-header {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--line);
+  color: var(--primary);
+}
+
+.profile-card-header svg {
+  color: var(--secondary);
+}
+
+.profile-card-header strong {
+  font-size: 15px;
+}
+
+.profile-card-header > span {
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.profile-field-list {
+  display: grid;
+  gap: 18px;
+  padding: 24px 30px;
+}
+
+.profile-field {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-field span,
+.profile-wallet small {
+  color: #8a94a6;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.profile-field strong {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--primary);
+  font-size: 14px;
+}
+
+.profile-rating {
+  gap: 10px;
+}
+
+.profile-rating span {
+  color: var(--secondary);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.profile-wallet {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding-bottom: 24px;
+  box-shadow: 0 16px 36px rgba(18, 28, 45, 0.12);
+}
+
+.profile-wallet::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -22px;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: rgba(67, 97, 238, 0.12);
+}
+
+.profile-wallet > small,
+.profile-wallet > strong,
+.profile-wallet > button {
+  position: relative;
+  z-index: 1;
+  margin-inline: 28px;
+}
+
+.profile-wallet > strong {
+  color: var(--primary);
+  font-size: 36px;
+  line-height: 1;
+}
+
+.profile-wallet .primary-button {
+  margin-top: 6px;
+}
+
 .mobile-only {
   display: none;
 }
@@ -1029,10 +1244,21 @@ tbody tr:last-child td {
   .form-grid,
   .metric-grid,
   .metric-grid.two,
+  .profile-grid,
   .race-card-grid,
   .check-grid,
   .form-grid.dense {
     grid-template-columns: 1fr;
+  }
+
+  .profile-hero {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .profile-actions {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .auth-layout {
