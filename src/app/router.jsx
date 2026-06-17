@@ -23,6 +23,7 @@ import RideInvitationsPage from "../features/jockey/pages/RideInvitationsPage";
 import SchedulePage from "../features/jockey/pages/SchedulePage";
 import NotificationsPage from "../features/notifications/pages/NotificationsPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
+import RaceAnalysisPage from "../features/race/pages/RaceAnalysisPage";
 import RaceListPage from "../features/races/pages/RaceListPage";
 import HorseCheckPage from "../features/referee/pages/HorseCheckPage";
 import RaceMonitoringPage from "../features/referee/pages/RaceMonitoringPage";
@@ -44,6 +45,8 @@ function AppRouter({ role, activePage, user, setSession, activateRole, setActive
   switch (activePage) {
     case "home":
       return <HomePage role={role} user={user} onNavigate={setActivePage} />;
+    case "race-analysis":
+      return <RaceAnalysisPage role={role} user={user} />;
     case "spectator-dashboard":
       return <SpectatorDashboard user={user} />;
     case "owner-dashboard":

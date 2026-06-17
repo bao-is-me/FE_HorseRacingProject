@@ -884,6 +884,36 @@ tbody tr:last-child td {
   border-color: var(--line);
 }
 
+.status-pill.race-live {
+  background: #ffdad6;
+  color: var(--danger);
+  border-color: #f1aaa4;
+}
+
+.status-pill.race-betting-open {
+  background: #d8eaff;
+  color: #1e90ff;
+  border-color: #9dccff;
+}
+
+.status-pill.race-scheduled {
+  background: #fff4bf;
+  color: #8a6500;
+  border-color: #e7c74f;
+}
+
+.status-pill.race-result-pending {
+  background: #ffe7d8;
+  color: #a44908;
+  border-color: #f4be8d;
+}
+
+.status-pill.race-finished {
+  background: #eef1f4;
+  color: #5d6470;
+  border-color: #d7dbe2;
+}
+
 .race-card-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

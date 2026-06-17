@@ -1,6 +1,8 @@
 export const raceResults = [
   { id: "result-1", registrationId: "reg-3", finishPosition: 1, finishTime: 121450, isDisqualified: false },
-  { id: "result-2", registrationId: "reg-4", finishPosition: 2, finishTime: 132880, isDisqualified: false }
+  { id: "result-2", registrationId: "reg-4", finishPosition: 2, finishTime: 132880, isDisqualified: false },
+  { id: "result-3", registrationId: "reg-5", finishPosition: 1, finishTime: 118720, isDisqualified: false },
+  { id: "result-4", registrationId: "reg-6", finishPosition: 2, finishTime: 123980, isDisqualified: false }
 ];
 
 export const prizes = [

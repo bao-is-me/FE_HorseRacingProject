@@ -2,7 +2,7 @@ import React from "react";
 import StatusPill from "../components/ui/StatusPill";
 
 export function renderCell(value) {
-  if (["Active", "Healthy", "Confirmed", "Official", "Completed", "Ready", "Won", "Accepted"].includes(value)) {
+  if (["Active", "Healthy", "Confirmed", "Official", "Completed", "Finished", "Ready", "Won", "Accepted"].includes(value)) {
     return <StatusPill tone="live">{value}</StatusPill>;
   }
   if (["Pending", "InvitationPending", "ResultPending", "Scheduled", "Resting", "Ready to publish"].includes(value)) {

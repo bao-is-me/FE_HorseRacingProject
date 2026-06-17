@@ -44,6 +44,16 @@ export const races = [
     trackLength: 2200,
     maxParticipants: 12,
     status: "ResultPending"
+  },
+  {
+    id: "race-5",
+    tournamentId: "t-2",
+    racecourseId: "rc-2",
+    raceNumber: 3,
+    startTime: "2026-07-06T13:45:00",
+    trackLength: 1800,
+    maxParticipants: 10,
+    status: "Finished"
   }
 ];
 
@@ -91,5 +101,27 @@ export const registrations = [
     jockeyConfirmation: true,
     status: "ResultPending",
     odds: 4.1
+  },
+  {
+    id: "reg-5",
+    raceId: "race-5",
+    horseId: "h-1",
+    jockeyId: "039126e4",
+    gateNumber: 3,
+    ownerConfirmation: true,
+    jockeyConfirmation: true,
+    status: "Confirmed",
+    odds: 2.5
+  },
+  {
+    id: "reg-6",
+    raceId: "race-5",
+    horseId: "h-4",
+    jockeyId: "039126e4",
+    gateNumber: 6,
+    ownerConfirmation: true,
+    jockeyConfirmation: true,
+    status: "Confirmed",
+    odds: 3.1
   }
 ];
