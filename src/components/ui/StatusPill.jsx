@@ -3,10 +3,11 @@ import React from "react";
 const raceStatusClass = {
   Live: "race-live",
   BettingOpen: "race-betting-open",
+  BettingClosed: "race-betting-open",
   Scheduled: "race-scheduled",
-  ResultPending: "race-result-pending",
   Finished: "race-finished",
-  Completed: "race-finished"
+  Completed: "race-finished",
+  Cancelled: "danger"
 };
 
 function StatusPill({ tone = "neutral", children }) {

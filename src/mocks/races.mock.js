@@ -43,7 +43,7 @@ export const races = [
     startTime: "2026-07-05T17:15:00",
     trackLength: 2200,
     maxParticipants: 12,
-    status: "ResultPending"
+    status: "Completed"
   },
   {
     id: "race-5",
@@ -77,7 +77,7 @@ export const registrations = [
     gateNumber: 5,
     ownerConfirmation: true,
     jockeyConfirmation: false,
-    status: "InvitationPending",
+    status: "Pending",
     odds: 3.4
   },
   {
@@ -88,7 +88,7 @@ export const registrations = [
     gateNumber: 1,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Racing",
+    status: "Confirmed",
     odds: 2.2
   },
   {
@@ -99,7 +99,7 @@ export const registrations = [
     gateNumber: 4,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "ResultPending",
+    status: "Confirmed",
     odds: 4.1
   },
   {

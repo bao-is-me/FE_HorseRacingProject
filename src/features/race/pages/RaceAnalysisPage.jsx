@@ -11,17 +11,17 @@ import "./raceAnalysis.css";
 const statusPriority = {
   Live: 1,
   BettingOpen: 2,
-  Scheduled: 3,
-  ResultPending: 4,
-  Finished: 5,
-  Completed: 5
+  BettingClosed: 3,
+  Scheduled: 4,
+  Completed: 5,
+  Finished: 6
 };
 
-const raceFeedStatuses = ["Live", "BettingOpen", "Scheduled", "ResultPending", "Finished"];
+const raceFeedStatuses = ["Live", "BettingOpen", "BettingClosed", "Scheduled", "Completed", "Finished"];
 const defaultSelectedStatuses = ["Live", "BettingOpen", "Scheduled"];
 
 function normalizeStatus(status) {
-  return status === "Completed" ? "Finished" : status;
+  return status;
 }
 
 function sortRacesByStatusAndTime(allRaces) {

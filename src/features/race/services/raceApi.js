@@ -9,7 +9,7 @@ export function isLive(status) {
 }
 
 export function isFinished(status) {
-  return ["Finished", "Completed", "ResultPending"].includes(status);
+  return ["Finished", "Completed"].includes(status);
 }
 
 export function isPending(status) {

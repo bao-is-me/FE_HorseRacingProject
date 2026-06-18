@@ -37,7 +37,7 @@ export function getRaceRows() {
 
 export function getLiveRaceRows() {
   return races
-    .filter((race) => ["Live", "ResultPending", "BettingOpen"].includes(race.status))
+    .filter((race) => ["Live", "Completed", "BettingOpen"].includes(race.status))
     .map((race) => {
       const view = getRaceViewModel(race);
       return {

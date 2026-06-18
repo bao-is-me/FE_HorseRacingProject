@@ -5,10 +5,10 @@ export function renderCell(value) {
   if (["Active", "Healthy", "Confirmed", "Official", "Completed", "Finished", "Ready", "Won", "Accepted"].includes(value)) {
     return <StatusPill tone="live">{value}</StatusPill>;
   }
-  if (["Pending", "InvitationPending", "ResultPending", "Scheduled", "Resting", "Ready to publish"].includes(value)) {
+  if (["Pending", "Scheduled", "Resting", "Ready to publish"].includes(value)) {
     return <StatusPill tone="warning">{value}</StatusPill>;
   }
-  if (["Banned", "Error", "Review"].includes(value)) {
+  if (["Banned", "Error", "Review", "Injury", "Rejected", "Cancelled"].includes(value)) {
     return <StatusPill tone="danger">{value}</StatusPill>;
   }
   if (["BettingOpen", "Live", "Racing", "Info"].includes(value)) {

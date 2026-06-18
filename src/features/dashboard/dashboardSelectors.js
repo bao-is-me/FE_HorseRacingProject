@@ -37,7 +37,7 @@ export function getJockeyMetrics(user) {
 export function getRefereeMetrics() {
   return {
     liveRaces: races.filter((race) => race.status === "Live").length,
-    pendingResults: races.filter((race) => race.status === "ResultPending").length,
+    pendingResults: races.filter((race) => race.status === "Completed").length,
     incidentReports: reports.length,
     officialResults: raceResults.length
   };

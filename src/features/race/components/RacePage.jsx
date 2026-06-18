@@ -43,7 +43,7 @@ function mapHorsesToConfig(apiHorses) {
 function statusLabel(status) {
   if (status === "BettingOpen") return "Betting Open";
   if (status === "BettingClosed") return "Betting Closed";
-  if (status === "ResultPending") return "Result Pending";
+  if (status === "Completed") return "Completed";
   return status || "Demo";
 }
 

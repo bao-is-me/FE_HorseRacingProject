@@ -5,7 +5,7 @@ import { raceResults } from "../../mocks/results.mock";
 import { tournaments } from "../../mocks/tournaments.mock";
 import { formatDateTime } from "../../utils/formatters";
 
-const activeRaceStatuses = ["Live", "BettingOpen", "ResultPending"];
+const activeRaceStatuses = ["Live", "BettingOpen", "BettingClosed", "Scheduled"];
 const upcomingRaceStatuses = ["Scheduled", "BettingOpen"];
 const ongoingTournamentStatuses = ["Scheduled", "BettingOpen", "Live"];
 
