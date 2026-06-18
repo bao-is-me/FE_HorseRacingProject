@@ -30,7 +30,7 @@ function Leaderboard({ horses, liveStates = {}, results = [], finished = false }
         {results.map((result) => (
           <div className="race-leaderboard-row" key={`${result.horse.id}-${result.position}`}>
             <PositionBadge position={result.position} />
-            <strong>{result.horse.horseName}</strong>
+            <strong>{result.horse.name}</strong>
             <span>{result.horse.breed}</span>
             <span>{result.horse.age}y</span>
           </div>

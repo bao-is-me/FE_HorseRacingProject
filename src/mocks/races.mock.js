@@ -66,8 +66,7 @@ export const registrations = [
     gateNumber: 2,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Confirmed",
-    odds: 2.8
+    status: "Confirmed"
   },
   {
     id: "reg-2",
@@ -77,8 +76,7 @@ export const registrations = [
     gateNumber: 5,
     ownerConfirmation: true,
     jockeyConfirmation: false,
-    status: "Pending",
-    odds: 3.4
+    status: "Pending"
   },
   {
     id: "reg-3",
@@ -88,8 +86,7 @@ export const registrations = [
     gateNumber: 1,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Confirmed",
-    odds: 2.2
+    status: "Confirmed"
   },
   {
     id: "reg-4",
@@ -99,8 +96,7 @@ export const registrations = [
     gateNumber: 4,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Confirmed",
-    odds: 4.1
+    status: "Confirmed"
   },
   {
     id: "reg-5",
@@ -110,8 +106,7 @@ export const registrations = [
     gateNumber: 3,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Confirmed",
-    odds: 2.5
+    status: "Confirmed"
   },
   {
     id: "reg-6",
@@ -121,7 +116,6 @@ export const registrations = [
     gateNumber: 6,
     ownerConfirmation: true,
     jockeyConfirmation: true,
-    status: "Confirmed",
-    odds: 3.1
+    status: "Confirmed"
   }
 ];

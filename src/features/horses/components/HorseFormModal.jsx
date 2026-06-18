@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { ImagePlus, Upload, X } from "lucide-react";
 import { demoAccounts } from "../../../mocks/accounts.mock";
-import { HORSE_STATUSES } from "../horseConstants";
+import { HORSE_STATUS_VALUES } from "../../../domain";
 
 const EMPTY_FORM = {
   ownerId: "",
@@ -42,10 +42,14 @@ function HorseFormModal({ open, mode = "create", horse, ownerOnly, user, onClose
     const next = horse
       ? {
           ...EMPTY_FORM,
-          ...horse,
+          ownerId: horse.ownerId || "",
+          horseName: horse.name || "",
           age: horse.age ?? "",
+          breed: horse.breed || "",
           weight: horse.weight ?? "",
+          status: horse.status || "Healthy",
           recordWins: horse.recordWins ?? 0,
+          color: horse.color || "",
           imageUrl: horse.imageUrl || ""
         }
       : { ...EMPTY_FORM, ownerId: ownerOnly ? user?.id || "" : "" };
@@ -94,7 +98,7 @@ function HorseFormModal({ open, mode = "create", horse, ownerOnly, user, onClose
         <header className="horse-modal-header">
           <div>
             <span>{isEdit ? "Update horse" : "New stable record"}</span>
-            <h2 id="horse-form-title">{isEdit ? `Edit ${horse?.horseName}` : "Add a horse"}</h2>
+            <h2 id="horse-form-title">{isEdit ? `Edit ${horse?.name}` : "Add a horse"}</h2>
             <p>{isEdit ? "Only fields supported by HorseUpdateRequest are editable." : "Complete the HorseCreateRequest information below."}</p>
           </div>
           <button className="icon-button" type="button" onClick={onClose} aria-label="Close horse form"><X size={20} /></button>
@@ -163,7 +167,7 @@ function HorseFormModal({ open, mode = "create", horse, ownerOnly, user, onClose
             <label className="field">
               <span>Health Status</span>
               <select value={values.status} onChange={update("status")}>
-                {HORSE_STATUSES.map((status) => <option key={status} value={status}>{status}</option>)}
+                {HORSE_STATUS_VALUES.map((status) => <option key={status} value={status}>{status}</option>)}
               </select>
             </label>
           </div>

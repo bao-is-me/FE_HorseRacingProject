@@ -36,7 +36,7 @@ function HomePage({ role = "Spectator", onNavigate }) {
             <article className="race-card" key={`${race.Race}-${race["Start Time"]}`}>
               <div className="race-card-top">
                 <h3>{race.Race}</h3>
-                <StatusPill tone={race.Status === "Live" ? "info" : "warning"}>{race.Status}</StatusPill>
+                <StatusPill>{race.Status}</StatusPill>
               </div>
               <p>{race.Tournament}</p>
               <div className="mini-row">

@@ -1,18 +1,8 @@
 import React from "react";
 import StatusPill from "../components/ui/StatusPill";
+import { getStatusMeta } from "../domain";
 
 export function renderCell(value) {
-  if (["Active", "Healthy", "Confirmed", "Official", "Completed", "Finished", "Ready", "Won", "Accepted"].includes(value)) {
-    return <StatusPill tone="live">{value}</StatusPill>;
-  }
-  if (["Pending", "Scheduled", "Resting", "Ready to publish"].includes(value)) {
-    return <StatusPill tone="warning">{value}</StatusPill>;
-  }
-  if (["Banned", "Error", "Review", "Injury", "Rejected", "Cancelled"].includes(value)) {
-    return <StatusPill tone="danger">{value}</StatusPill>;
-  }
-  if (["BettingOpen", "Live", "Racing", "Info"].includes(value)) {
-    return <StatusPill tone="info">{value}</StatusPill>;
-  }
+  if (typeof value === "string" && getStatusMeta(value).known) return <StatusPill>{value}</StatusPill>;
   return value ?? "-";
 }

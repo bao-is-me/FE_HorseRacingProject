@@ -12,7 +12,7 @@ function PredictionBetPage({ compact = false, admin = false }) {
     <section className="panel">
       <PanelHeader
         kicker={admin ? "Prediction / Bet Management" : "Prediction / Bet Slip"}
-        title={compact ? "Top entries" : "Race entries and odds"}
+        title={compact ? "Top entries" : "Race entries"}
         description="Uses Registrations, Horses, JockeyProfile, UserProfiles, Bets, and UserProfiles.Balance."
         compact
       />

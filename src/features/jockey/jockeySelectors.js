@@ -4,33 +4,38 @@ import { races, registrations } from "../../mocks/races.mock";
 import { formatDateTime } from "../../utils/formatters";
 import { getRaceViewModel } from "../races/raceSelectors";
 import { DEFAULT_JOCKEY_EXPERIENCE_YEARS, DEFAULT_JOCKEY_RATING } from "./jockeyMock";
+import { mapHorses, mapRaceDetailsList, mapRegistrations } from "../../domain";
+
+const mappedRegistrations = mapRegistrations(registrations);
+const mappedRaces = mapRaceDetailsList(races);
+const mappedHorses = mapHorses(horses, { registrations: mappedRegistrations, races: mappedRaces });
 
 export function getJockeySelectionRows() {
-  return registrations.map((entry) => {
-    const horse = horses.find((item) => item.id === entry.horseId);
-    const race = races.find((item) => item.id === entry.raceId);
+  return mappedRegistrations.map((entry) => {
+    const horse = mappedHorses.find((item) => item.id === entry.horseId);
+    const race = mappedRaces.find((item) => item.id === entry.raceId);
     const jockey = demoAccounts.find((item) => item.id === entry.jockeyId);
     return {
-      Horse: horse?.horseName,
+      Horse: horse?.name,
       Race: `Race ${race?.raceNumber}`,
       Jockey: jockey?.fullName,
       Experience: `${jockey?.experienceYears || DEFAULT_JOCKEY_EXPERIENCE_YEARS} yrs`,
       Rating: jockey?.jockeyRating || DEFAULT_JOCKEY_RATING,
-      Confirmation: entry.jockeyConfirmation ? "Accepted" : "Pending"
+      Confirmation: entry.jockeyConfirmation ? "Confirmed" : entry.status
     };
   });
 }
 
 export function getScheduleRows() {
-  return registrations.map((entry) => {
-    const race = races.find((item) => item.id === entry.raceId);
-    const horse = horses.find((item) => item.id === entry.horseId);
+  return mappedRegistrations.map((entry) => {
+    const race = mappedRaces.find((item) => item.id === entry.raceId);
+    const horse = mappedHorses.find((item) => item.id === entry.horseId);
     const view = getRaceViewModel(race);
     return {
       Race: `Race ${race?.raceNumber}`,
-      Horse: horse?.horseName,
-      Tournament: view.tournament?.tournamentName,
-      Racecourse: view.racecourse?.racecourseName,
+      Horse: horse?.name,
+      Tournament: view.tournament?.name,
+      Racecourse: view.racecourseName,
       Start: formatDateTime(race?.startTime),
       Gate: entry.gateNumber,
       Status: entry.status
@@ -39,19 +44,18 @@ export function getScheduleRows() {
 }
 
 export function getRideInvitationRows() {
-  return registrations
+  return mappedRegistrations
     .filter((entry) => !entry.jockeyConfirmation)
     .map((entry) => {
-      const horse = horses.find((item) => item.id === entry.horseId);
-      const race = races.find((item) => item.id === entry.raceId);
+      const horse = mappedHorses.find((item) => item.id === entry.horseId);
+      const race = mappedRaces.find((item) => item.id === entry.raceId);
       const owner = demoAccounts.find((item) => item.id === horse?.ownerId);
       return {
-        Horse: horse?.horseName,
+        Horse: horse?.name,
         Owner: owner?.fullName,
         Race: `Race ${race?.raceNumber}`,
         Start: formatDateTime(race?.startTime),
-        Status: entry.status,
-        Action: "Accept / Reject"
+        Status: entry.status
       };
     });
 }

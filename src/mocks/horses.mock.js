@@ -1,6 +1,3 @@
-export const DEFAULT_OWNER_ID = "e3ad08be";
-export const HORSE_STATUS_OPTIONS = ["Healthy", "Injury", "Resting", "Retired"];
-
 export const horses = [
   {
     id: "h-1",

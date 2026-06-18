@@ -2,36 +2,25 @@ import React, { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Eye, Pencil, Plus, Search, Trash2 } from "lucide-react";
 import PanelHeader from "../../../components/ui/PanelHeader";
 import StatusPill from "../../../components/ui/StatusPill";
-import { horses as initialHorses, DEFAULT_OWNER_ID } from "../../../mocks/horses.mock";
-import { races, registrations } from "../../../mocks/races.mock";
 import HorseDetailDrawer from "../components/HorseDetailDrawer";
 import HorseFormModal from "../components/HorseFormModal";
 import HorseImage from "../components/HorseImage";
-import { getActivityStatusTone, getHorseStatusTone, HORSE_STATUSES } from "../horseConstants";
+import {
+  filterHorses,
+  HORSE_STATUS_VALUES,
+  mapHorseFormValues
+} from "../../../domain";
+import {
+  getHorseDetailModel,
+  getHorseModels
+} from "../horseSelectors";
 import "./horseManagement.css";
 
 const PAGE_SIZE = 6;
 
-function deriveHorseStatus(horse) {
-  const horseEntries = registrations.filter((entry) => entry.horseId === horse.id && entry.status === "Confirmed");
-  if (horseEntries.some((entry) => {
-    const race = races.find((item) => item.id === entry.raceId);
-    return race?.status === "Live";
-  })) return "Racing";
-  if (horseEntries.some((entry) => {
-    const race = races.find((item) => item.id === entry.raceId);
-    return ["Scheduled", "BettingOpen", "BettingClosed"].includes(race?.status);
-  })) return "Registered";
-  return horse.status;
-}
-
-function buildHorse(horse) {
-  return { ...horse, derivedStatus: horse.derivedStatus || deriveHorseStatus(horse) };
-}
-
 function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
-  const ownerId = user?.id || DEFAULT_OWNER_ID;
-  const [horseList, setHorseList] = useState(() => initialHorses.map(buildHorse));
+  const ownerId = user?.id;
+  const [horseList, setHorseList] = useState(getHorseModels);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [breed, setBreed] = useState("All");
@@ -42,20 +31,22 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
   const [notice, setNotice] = useState("");
 
   const scopedHorses = useMemo(
-    () => ownerOnly ? horseList.filter((horse) => horse.ownerId === ownerId || horse.ownerId === DEFAULT_OWNER_ID) : horseList,
+    () => ownerOnly
+      ? ownerId
+        ? filterHorses(horseList, { ownerId })
+        : []
+      : horseList,
     [horseList, ownerOnly, ownerId]
   );
   const breeds = useMemo(() => [...new Set(scopedHorses.map((horse) => horse.breed).filter(Boolean))].sort(), [scopedHorses]);
   const colors = useMemo(() => [...new Set(scopedHorses.map((horse) => horse.color).filter(Boolean))].sort(), [scopedHorses]);
-  const filteredHorses = useMemo(() => scopedHorses.filter((horse) => {
-    const term = search.trim().toLowerCase();
-    const matchesSearch = !term || [horse.horseName, horse.breed, horse.color, horse.status]
-      .some((value) => String(value || "").toLowerCase().includes(term));
-    return matchesSearch
-      && (status === "All" || horse.status === status)
-      && (breed === "All" || horse.breed === breed)
-      && (color === "All" || horse.color === color);
+  const filteredHorses = useMemo(() => filterHorses(scopedHorses, {
+    search,
+    status,
+    breed,
+    color
   }), [scopedHorses, search, status, breed, color]);
+  const selectedHorseDetail = useMemo(() => getHorseDetailModel(selectedHorse), [selectedHorse]);
 
   const totalPages = Math.max(1, Math.ceil(filteredHorses.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -72,46 +63,28 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
     const now = new Date().toISOString();
     if (formState?.mode === "edit") {
       setHorseList((current) => current.map((horse) => horse.id === formState.horse.id
-        ? {
-            ...horse,
-            horseName: values.horseName,
-            age: values.age,
-            breed: values.breed,
-            weight: values.weight,
-            status: values.status,
-            recordWins: values.recordWins,
-            color: values.color,
-            derivedStatus: values.status,
-            updatedAt: now
-          }
+        ? mapHorseFormValues({ ...values, updatedAt: now }, horse)
         : horse));
       setNotice(`${values.horseName} was updated in the FE demo state.`);
     } else {
-      const created = buildHorse({
+      const created = mapHorseFormValues({
         id: globalThis.crypto?.randomUUID?.() || `horse-${Date.now()}`,
         ownerId: ownerOnly ? ownerId : values.ownerId,
-        horseName: values.horseName,
-        age: values.age,
-        breed: values.breed,
-        weight: values.weight,
-        status: values.status,
-        recordWins: values.recordWins,
-        color: values.color,
-        imageUrl: values.imageUrl,
-        createAt: now,
+        ...values,
+        createdAt: now,
         updatedAt: now
       });
       setHorseList((current) => [created, ...current]);
-      setNotice(`${created.horseName} was added to the FE demo state.`);
+      setNotice(`${created.name} was added to the FE demo state.`);
       setPage(1);
     }
     setFormState(null);
   };
 
   const removeHorse = (horse) => {
-    if (!window.confirm(`Delete ${horse.horseName} from the FE demo list?`)) return;
+    if (!window.confirm(`Delete ${horse.name} from the FE demo list?`)) return;
     setHorseList((current) => current.filter((item) => item.id !== horse.id));
-    setNotice(`${horse.horseName} was removed from the FE demo state.`);
+    setNotice(`${horse.name} was removed from the FE demo state.`);
     if (selectedHorse?.id === horse.id) setSelectedHorse(null);
   };
 
@@ -134,21 +107,21 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
             <tr key={horse.id}>
               <td>
                 <button className="horse-name-cell" type="button" onClick={() => setSelectedHorse(horse)}>
-                  <HorseImage src={horse.imageUrl} alt={horse.horseName} />
-                  <span><strong>{horse.horseName}</strong><small>ID: {horse.id}</small></span>
+                  <HorseImage src={horse.imageUrl} alt={horse.name} />
+                  <span><strong>{horse.name}</strong><small>ID: {horse.id}</small></span>
                 </button>
               </td>
               <td><strong>{horse.breed || "—"}</strong><small>{horse.age ?? "—"} years · {horse.color || "—"}</small></td>
               <td>{horse.weight != null ? `${horse.weight} kg` : "—"}</td>
               <td><strong>{horse.recordWins ?? 0}</strong></td>
-              <td><StatusPill tone={getHorseStatusTone(horse.status)}>{horse.status || "Unknown"}</StatusPill></td>
-              <td><StatusPill tone={getActivityStatusTone(horse.derivedStatus)}>{horse.derivedStatus || horse.status || "Unknown"}</StatusPill></td>
+              <td><StatusPill>{horse.status || "Unknown"}</StatusPill></td>
+              <td>{horse.derivedStatus ? <StatusPill>{horse.derivedStatus}</StatusPill> : "—"}</td>
               {!embedded && (
                 <td>
                   <div className="horse-row-actions">
-                    <button type="button" onClick={() => setSelectedHorse(horse)} aria-label={`View ${horse.horseName}`}><Eye size={17} /></button>
-                    <button type="button" onClick={() => setFormState({ mode: "edit", horse })} aria-label={`Edit ${horse.horseName}`}><Pencil size={17} /></button>
-                    <button className="danger" type="button" onClick={() => removeHorse(horse)} aria-label={`Delete ${horse.horseName}`}><Trash2 size={17} /></button>
+                    <button type="button" onClick={() => setSelectedHorse(horse)} aria-label={`View ${horse.name}`}><Eye size={17} /></button>
+                    <button type="button" onClick={() => setFormState({ mode: "edit", horse })} aria-label={`Edit ${horse.name}`}><Pencil size={17} /></button>
+                    <button className="danger" type="button" onClick={() => removeHorse(horse)} aria-label={`Delete ${horse.name}`}><Trash2 size={17} /></button>
                   </div>
                 </td>
               )}
@@ -165,7 +138,7 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
       <section className="panel horse-embedded">
         <PanelHeader kicker={ownerOnly ? "My Horse Management" : "Horse Management"} title="Horse roster" description="Health and current race activity at a glance." compact />
         {horseTable}
-        <HorseDetailDrawer horse={selectedHorse} onClose={() => setSelectedHorse(null)} />
+        <HorseDetailDrawer horse={selectedHorseDetail} onClose={() => setSelectedHorse(null)} />
       </section>
     );
   }
@@ -194,7 +167,7 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
             <Search size={18} />
             <input value={search} onChange={resetPage(setSearch)} placeholder="Search name, breed, color or status..." />
           </label>
-          <label><span>Status</span><select value={status} onChange={resetPage(setStatus)}><option>All</option>{HORSE_STATUSES.map((item) => <option key={item}>{item}</option>)}</select></label>
+          <label><span>Status</span><select value={status} onChange={resetPage(setStatus)}><option>All</option>{HORSE_STATUS_VALUES.map((item) => <option key={item}>{item}</option>)}</select></label>
           <label><span>Breed</span><select value={breed} onChange={resetPage(setBreed)}><option>All</option>{breeds.map((item) => <option key={item}>{item}</option>)}</select></label>
           <label><span>Color</span><select value={color} onChange={resetPage(setColor)}><option>All</option>{colors.map((item) => <option key={item}>{item}</option>)}</select></label>
         </div>
@@ -220,7 +193,7 @@ function HorseManagementPage({ ownerOnly = false, user, embedded = false }) {
         onClose={() => setFormState(null)}
         onSubmit={saveHorse}
       />
-      <HorseDetailDrawer horse={selectedHorse} onClose={() => setSelectedHorse(null)} />
+      <HorseDetailDrawer horse={selectedHorseDetail} onClose={() => setSelectedHorse(null)} />
     </section>
   );
 }

@@ -3,6 +3,9 @@ import { racecourses, races } from "../../mocks/races.mock";
 import { roles } from "../../mocks/roles.mock";
 import { tournaments } from "../../mocks/tournaments.mock";
 import { formatCurrency } from "../../utils/formatters";
+import { mapRaceDetailsList } from "../../domain";
+
+const mappedRaces = mapRaceDetailsList(races);
 
 export function getUserRows() {
   return demoAccounts.map((account) => ({
@@ -23,8 +26,7 @@ export function getPendingAccountRows() {
       Role: roles[account.role],
       FullName: account.fullName,
       Phone: account.phone,
-      Status: account.status,
-      Action: "Approve / Reject"
+      Status: account.status
     }));
 }
 
@@ -42,16 +44,14 @@ export function getRacecourseRows() {
   return racecourses.map((item) => ({
     Racecourse: item.racecourseName,
     Location: item.location,
-    TrackType: item.trackType,
-    Status: "Available"
+    TrackType: item.trackType
   }));
 }
 
 export function getRefereeAssignmentRows() {
-  return races.map((race) => ({
+  return mappedRaces.map((race) => ({
     Race: `Race ${race.raceNumber}`,
     Status: race.status,
-    Referee: "Track Referee",
-    Note: "Basic view until RaceReferees table exists"
+    Referee: "Track Referee"
   }));
 }

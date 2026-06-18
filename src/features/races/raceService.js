@@ -1,8 +1,12 @@
 import { USE_MOCK_DATA } from "../../services/apiClient";
 import { racecourses, races, registrations } from "../../mocks/races.mock";
+import { mapRaceDetailsList, mapRegistrations } from "../../domain";
+
+const mappedRaces = mapRaceDetailsList(races, { racecourses });
+const mappedRegistrations = mapRegistrations(registrations);
 
 export async function getRaces() {
-  return races;
+  return mappedRaces;
 }
 
 export async function getRacecourses() {
@@ -10,12 +14,12 @@ export async function getRacecourses() {
 }
 
 export async function getRegistrations() {
-  return registrations;
+  return mappedRegistrations;
 }
 
 export async function getRaceDemoData() {
   if (USE_MOCK_DATA) {
-    return { races, racecourses, registrations };
+    return { races: mappedRaces, racecourses, registrations: mappedRegistrations };
   }
-  return { races, racecourses, registrations };
+  return { races: mappedRaces, racecourses, registrations: mappedRegistrations };
 }

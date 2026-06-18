@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Gauge, PlayCircle, RotateCcw, Wifi, WifiOff } from "lucide-react";
 import PanelHeader from "../../../components/ui/PanelHeader";
 import StatusPill from "../../../components/ui/StatusPill";
-import { statusTone } from "../../../utils/statusUtils";
 import Leaderboard from "./Leaderboard";
 import RaceCanvas from "./RaceCanvas";
 import { useRaceConnection } from "../hooks/useRaceConnection";
@@ -34,17 +33,10 @@ function mapHorsesToConfig(apiHorses) {
   const horses = apiHorses.length ? apiHorses : [];
   return horses.slice(0, 6).map((horse, index) => ({
     id: horse.id,
-    name: horse.horseName,
+    name: horse.name,
     jockeyName: horse.breed,
     ...LANE_CONFIGS[index]
   }));
-}
-
-function statusLabel(status) {
-  if (status === "BettingOpen") return "Betting Open";
-  if (status === "BettingClosed") return "Betting Closed";
-  if (status === "Completed") return "Completed";
-  return status || "Demo";
 }
 
 function useDemoRaceData(horses, enabled, speedMultiplier, seed) {
@@ -167,7 +159,7 @@ function buildFallbackResults(horses) {
     position: index + 1,
     horse: {
       id: horse.id,
-      horseName: horse.name,
+      name: horse.name,
       breed: horse.jockeyName,
       color: horse.coatColor,
       age: 4 + index
@@ -240,7 +232,7 @@ function RacePage({ raceId, onBack }) {
   const stopReplay = useCallback(() => setReplaying(false), []);
   const replayResults = useMemo(() => {
     if (results.length) return results;
-    if (["Finished", "Completed"].includes(race?.status)) return buildFallbackResults(horses);
+    if (isFinished(race?.status)) return buildFallbackResults(horses);
     return [];
   }, [horses, race?.status, results]);
   const replayLiveData = useRaceReplayData(
@@ -253,7 +245,7 @@ function RacePage({ raceId, onBack }) {
   );
   const effectiveLiveData = replayLiveData || liveData || demoLiveData;
   const currentStatus = race?.status || effectiveLiveData?.status || "Live";
-  const canReplay = ["Finished", "Completed"].includes(race?.status) && replayResults.length > 0;
+  const canReplay = isFinished(race?.status) && replayResults.length > 0;
 
   const liveStates = useMemo(() => {
     const states = {};
@@ -265,7 +257,7 @@ function RacePage({ raceId, onBack }) {
 
   const title = race ? `Race ${race.raceNumber} - ${race.racecourseName}` : "Demo race simulation";
   const description = race
-    ? `${race.trackLength}m - ${race.location}${race.tournament?.tournamentName ? ` - ${race.tournament.tournamentName}` : ""}`
+    ? `${race.trackLength}m - ${race.location}${race.tournament?.name ? ` - ${race.tournament.name}` : ""}`
     : "Offline race simulation with mock horses, live track movement, and leaderboard projection.";
 
   return (
@@ -281,7 +273,7 @@ function RacePage({ raceId, onBack }) {
           <PanelHeader kicker="Live Simulation" title={title} description={description} compact />
         </div>
         <div className="race-live-actions">
-          <StatusPill tone={statusTone(currentStatus)}>{statusLabel(currentStatus)}</StatusPill>
+          <StatusPill>{currentStatus}</StatusPill>
           <span className={`race-connection ${connected ? "online" : "offline"}`}>
             {connected ? <Wifi size={15} /> : <WifiOff size={15} />}
             {connected ? "Connected" : "Demo fallback"}

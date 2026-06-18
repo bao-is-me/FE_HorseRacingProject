@@ -1,20 +1,11 @@
 import React from "react";
-
-const raceStatusClass = {
-  Live: "race-live",
-  BettingOpen: "race-betting-open",
-  BettingClosed: "race-betting-open",
-  Scheduled: "race-scheduled",
-  Finished: "race-finished",
-  Completed: "race-finished",
-  Cancelled: "danger"
-};
+import { getStatusMeta } from "../../domain";
 
 function StatusPill({ tone = "neutral", children }) {
   const statusKey = typeof children === "string" ? children : "";
-  const resolvedTone = raceStatusClass[statusKey] || tone;
+  const status = getStatusMeta(statusKey, tone);
 
-  return <span className={`status-pill ${resolvedTone}`}>{children}</span>;
+  return <span className={`status-pill ${status.color}`}>{status.label}</span>;
 }
 
 export default StatusPill;

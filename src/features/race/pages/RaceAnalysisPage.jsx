@@ -6,59 +6,25 @@ import RaceListPage from "../../races/pages/RaceListPage";
 import { formatDateTime } from "../../../utils/formatters";
 import RacePage from "../components/RacePage";
 import { isLive, raceApi } from "../services/raceApi";
+import {
+  filterRacesByStatuses,
+  getRaceSearchText,
+  RACE_STATUS_VALUES,
+  sortRacesByStatusAndTime
+} from "../../../domain";
 import "./raceAnalysis.css";
 
-const statusPriority = {
-  Live: 1,
-  BettingOpen: 2,
-  BettingClosed: 3,
-  Scheduled: 4,
-  Completed: 5,
-  Finished: 6
-};
-
-const raceFeedStatuses = ["Live", "BettingOpen", "BettingClosed", "Scheduled", "Completed", "Finished"];
+const raceFeedStatuses = RACE_STATUS_VALUES.filter((status) => status !== "Cancelled");
 const defaultSelectedStatuses = ["Live", "BettingOpen", "Scheduled"];
 
-function normalizeStatus(status) {
-  return status;
-}
-
-function sortRacesByStatusAndTime(allRaces) {
-  return [...allRaces].sort((a, b) => {
-    const aPriority = statusPriority[a.status] || 99;
-    const bPriority = statusPriority[b.status] || 99;
-
-    if (aPriority !== bPriority) return aPriority - bPriority;
-    return new Date(a.startTime) - new Date(b.startTime);
-  });
-}
-
-function getRaceSearchText(race) {
-  return [
-    race.raceId,
-    `Race ${race.raceNumber}`,
-    race.raceNumber,
-    race.status,
-    race.racecourseName,
-    race.location,
-    race.tournament?.tournamentName
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-}
-
 function RaceCard({ race, active, onSelect }) {
-  const normalizedStatus = normalizeStatus(race.status);
-
   return (
-    <button className={`race-analysis-card ${active ? "active" : ""}`} type="button" onClick={() => onSelect(race.raceId)}>
+    <button className={`race-analysis-card ${active ? "active" : ""}`} type="button" onClick={() => onSelect(race.id)}>
       <div>
         <strong>Race {race.raceNumber}</strong>
-        <StatusPill>{normalizedStatus}</StatusPill>
+        <StatusPill>{race.status}</StatusPill>
       </div>
-      <em>{race.tournament?.tournamentName || "Tournament pending"}</em>
+      <em>{race.tournament?.name || "Tournament pending"}</em>
       <span>{race.racecourseName}</span>
       <small>{formatDateTime(race.startTime)}</small>
     </button>
@@ -80,13 +46,13 @@ function RaceAnalysisPage({ role = "Spectator" }) {
       .then((items) => {
         if (!mounted) return;
         const sortedItems = sortRacesByStatusAndTime(items);
-        const selectableRaces = sortedItems.filter((race) => defaultSelectedStatuses.includes(normalizeStatus(race.status)));
+        const selectableRaces = filterRacesByStatuses(sortedItems, defaultSelectedStatuses);
         setRaces(sortedItems);
         setSelectedRaceId(
           (current) =>
             current ||
-            selectableRaces.find((race) => isLive(race.status))?.raceId ||
-            selectableRaces[0]?.raceId ||
+            selectableRaces.find((race) => isLive(race.status))?.id ||
+            selectableRaces[0]?.id ||
             null
         );
       })
@@ -99,9 +65,10 @@ function RaceAnalysisPage({ role = "Spectator" }) {
     };
   }, []);
 
-  const feedRaces = sortRacesByStatusAndTime(races)
-    .filter((race) => raceFeedStatuses.includes(normalizeStatus(race.status)))
-    .filter((race) => (selectedStatuses.length ? selectedStatuses.includes(normalizeStatus(race.status)) : true))
+  const feedRaces = filterRacesByStatuses(
+    filterRacesByStatuses(sortRacesByStatusAndTime(races), raceFeedStatuses),
+    selectedStatuses
+  )
     .filter((race) => {
       const keyword = searchTerm.trim().toLowerCase();
       return keyword ? getRaceSearchText(race).includes(keyword) : true;
@@ -171,7 +138,7 @@ function RaceAnalysisPage({ role = "Spectator" }) {
           >
             <div>
               <strong>Demo race</strong>
-              <StatusPill tone="info">Live</StatusPill>
+              <StatusPill>Live</StatusPill>
             </div>
             <span>Offline simulation</span>
             <small>Works without backend</small>
@@ -183,7 +150,7 @@ function RaceAnalysisPage({ role = "Spectator" }) {
             <div className="race-analysis-empty">No races match the selected filters.</div>
           ) : (
             feedRaces.map((race) => (
-              <RaceCard key={race.raceId} race={race} active={race.raceId === selectedRaceId} onSelect={setSelectedRaceId} />
+              <RaceCard key={race.id} race={race} active={race.id === selectedRaceId} onSelect={setSelectedRaceId} />
             ))
           )}
         </div>

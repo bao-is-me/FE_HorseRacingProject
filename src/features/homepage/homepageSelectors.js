@@ -4,33 +4,34 @@ import { races, racecourses, registrations } from "../../mocks/races.mock";
 import { raceResults } from "../../mocks/results.mock";
 import { tournaments } from "../../mocks/tournaments.mock";
 import { formatDateTime } from "../../utils/formatters";
+import { filterRacesByStatuses, mapHorses, mapRaceDetailsList, mapRegistrations } from "../../domain";
 
 const activeRaceStatuses = ["Live", "BettingOpen", "BettingClosed", "Scheduled"];
 const upcomingRaceStatuses = ["Scheduled", "BettingOpen"];
 const ongoingTournamentStatuses = ["Scheduled", "BettingOpen", "Live"];
+const mappedRegistrations = mapRegistrations(registrations);
+const mappedRaces = mapRaceDetailsList(races, { racecourses, tournaments });
+const mappedHorses = mapHorses(horses, { registrations: mappedRegistrations, races: mappedRaces });
 
 export function getHomepageOverview() {
   return {
-    activeRaces: races.filter((race) => activeRaceStatuses.includes(race.status)).length,
-    registeredHorses: horses.length,
+    activeRaces: filterRacesByStatuses(mappedRaces, activeRaceStatuses).length,
+    registeredHorses: mappedHorses.length,
     ongoingTournaments: tournaments.filter((tournament) => ongoingTournamentStatuses.includes(tournament.status)).length,
-    activeParticipants: demoAccounts.filter((account) => account.status === "Active").length + registrations.length
+    activeParticipants: demoAccounts.filter((account) => account.status === "Active").length + mappedRegistrations.length
   };
 }
 
 export function getHomepageRaceRows() {
-  return races
-    .filter((race) => [...activeRaceStatuses, ...upcomingRaceStatuses].includes(race.status))
+  return filterRacesByStatuses(mappedRaces, [...activeRaceStatuses, ...upcomingRaceStatuses])
     .sort((a, b) => new Date(a.startTime) - new Date(b.startTime))
     .map((race) => {
-      const tournament = tournaments.find((item) => item.id === race.tournamentId);
-      const racecourse = racecourses.find((item) => item.id === race.racecourseId);
-      const entries = registrations.filter((item) => item.raceId === race.id);
+      const entries = mappedRegistrations.filter((item) => item.raceId === race.id);
 
       return {
         Race: `Race ${race.raceNumber}`,
-        Tournament: tournament?.tournamentName || "-",
-        Racecourse: racecourse ? `${racecourse.racecourseName} - ${racecourse.trackType}` : "-",
+        Tournament: race.tournament?.name || "-",
+        Racecourse: race.racecourseName ? `${race.racecourseName} - ${race.trackType}` : "-",
         "Start Time": formatDateTime(race.startTime),
         Entries: `${entries.length}/${race.maxParticipants}`,
         Status: race.status
@@ -40,19 +41,19 @@ export function getHomepageRaceRows() {
 
 export function getHomepageActivities() {
   const resultActivities = raceResults.map((result) => {
-    const entry = registrations.find((item) => item.id === result.registrationId);
-    const horse = horses.find((item) => item.id === entry?.horseId);
+    const entry = mappedRegistrations.find((item) => item.id === result.registrationId);
+    const horse = mappedHorses.find((item) => item.id === entry?.horseId);
     return {
-      Title: `${horse?.horseName || "Race entry"} finished #${result.finishPosition}`,
+      Title: `${horse?.name || "Race entry"} finished #${result.finishPosition}`,
       Type: "Race result",
-      Status: result.isDisqualified ? "Review" : "Official"
+      Disqualified: result.isDisqualified ? "Yes" : "No"
     };
   });
 
   const tournamentActivities = tournaments.slice(0, 2).map((tournament) => ({
     Title: tournament.tournamentName,
     Type: "Tournament update",
-    Status: tournament.status
+    Disqualified: "-"
   }));
 
   return [...resultActivities, ...tournamentActivities].slice(0, 4);
