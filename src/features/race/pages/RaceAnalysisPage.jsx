@@ -89,7 +89,7 @@ function RaceAnalysisPage({ role = "Spectator" }) {
       />
 
       <section className="panel race-analysis-schedule">
-        <RaceListPage role={role} />
+        <RaceListPage role={role} compact />
       </section>
 
       <section className="panel race-analysis-feed">
